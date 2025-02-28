@@ -1,0 +1,549 @@
+/* General Reset */
+body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s; /* Add transition */
+    font-size: 16px; /* Ensure readable font size */
+}
+
+body.light-mode {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+body.dark-mode {
+    background-color: #282828;
+    color: #e0e0e0; /* Increase contrast */
+}
+
+/* Add these new dark mode styles after .container */
+.dark-mode .sidebar {
+    background-color: #333;
+    border-right: 1px solid #444;
+    box-shadow: 2px 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .calendar {
+    background-color: rgba(32, 33, 36);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .calendar:hover {
+    border: 1px solid rgba(138, 180, 248);
+    box-shadow: 0 0 10px rgba(138, 180, 248);
+}
+
+.dark-mode .main-content{
+    background-color: #333;
+    color: #fff;
+    box-shadow: 0 0 10px #444;
+    border: 1px solid #444;
+}
+
+.dark-mode .journal-entry-form{
+    background-color: rgba(48, 49, 52);
+    color: #fff;
+    box-shadow: 0 0 10px white;
+}
+
+.dark-mode .sidebar:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .entry-content {
+    background-color: rgba(55, 56, 60);
+    color: #ECDFCC;
+
+    border: 1px solid rgb(60, 64, 67);
+
+}
+
+.dark-mode .entry-title {
+    background-color: rgba(55, 56, 60);
+    color: #ECDFCC;
+    border: 1px solid rgb(60, 64, 67);
+}
+
+
+/* Add transition effects to components */
+.sidebar,
+.calendar,
+.journaling {
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* General Layout */
+.container {
+    display: flex;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background-color 0.3s;
+}
+
+.sidebar:hover {
+    background-color: #e0e0e0;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #000; /* Increase contrast */
+    display: flex;
+    align-items: center;
+}
+
+.sidebar ul li a:hover, .sidebar ul li a:focus {
+    color: #0056b3; /* Ensure focus state is visible */
+}
+
+.dark-mode .sidebar ul li a {
+    color: #e0e0e0; /* Increase contrast */
+}
+
+.dark-mode .sidebar ul li a:hover, .dark-mode .sidebar ul li a:focus {
+    color: #007bff; /* Ensure focus state is visible */
+}
+
+/* Calendar */
+.calendar {
+    margin-top: 10px;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-size: 12px; /* Smaller font size */
+}
+
+.month {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.month ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.month ul li {
+    font-size: 18px; /* Smaller font size */
+    font-weight: bold;
+}
+
+.month span {
+    font-size: 14px;
+    text-align: left;
+}
+.month .prev, .month .next {
+    cursor: pointer;
+}
+
+.weekdays {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+}
+
+.weekdays li {
+    width: 30%;
+    text-align: center;
+    font-weight: bold;
+    line-height: 0;
+}
+
+.days {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.days li {
+    width: 14%;
+    text-align: center;
+    padding: 3px 0; /* Smaller padding */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    line-height: 0.5;
+}
+
+.days li:hover {
+    background-color: #e0e0e0;
+    border-radius: 2px;
+}
+
+/* Dark Mode Button */
+.switch-container {
+    margin-top: auto;
+    text-align: left;
+    padding-top: 20px;
+    
+}
+
+.switch-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #007bff;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.light-mode.main-content:hover {
+    background-color: #f0f0f0;
+}
+.dark-mode .main-content:hover{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Journal Entry Form */
+.journal-entry-form {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.journal-entry-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.journal-entry-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.journal-entry-form input,
+.journal-entry-form textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.journal-entry-form textarea {
+    height: 200px; /* Increase the height of the text box */
+}
+
+.journal-entry-form button {
+    background-color: #0056b3; /* Increase contrast */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.journal-entry-form button:hover, .journal-entry-form button:focus {
+    background-color: #003f7f; /* Ensure focus state is visible */
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.nav-arrow {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.nav-arrow:hover {
+    background-color: #0056b3;
+}
+
+.date {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Editor */
+.editor {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.entry-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.entry-content {
+    flex-grow: 1;
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+}
+
+/* Entries Page */
+.entries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.light-mode .entry-box {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+.dark-mode .entry-box {
+    background-color: rgba(32, 33, 36);
+    padding: 20px;
+    border: 1px solid rgba(60, 64, 67);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s;
+}
+
+.light-mode .entry-box:hover {
+    background-color: #e0e0e0;
+}
+
+.dark-mode .entry-box:hover {
+    background-color: rgba(48, 49, 52);
+    border: 1px solid rgba(138, 180, 248);
+
+}
+
+.entry-box h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    line-height: 1.2 !important; /* Ensure line height is applied */
+}
+
+.entry-box p {
+    line-height: 1.4 !important; /* Ensure line height is applied */
+}
+
+/* Highlighted Entry Days */
+.entry-day {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 8px;
+}
+
+/* Add focus styles for better accessibility */
+a:focus, button:focus, input:focus, textarea:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Ensure the anchor tag does not affect the design */
+.entry-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit color from parent */
+    display: block; /* Make the entire box clickable */
+}
+
+/* Optional: Add hover effect for better UX */
+.entry-box:hover .entry-link {
+    color: inherit; /* Ensure hover color is consistent */
+}
+
+/* Notification System */
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.notification {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 10px;
+    min-width: 300px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(120%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    align-items: start;
+    gap: 12px;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.notification-content {
+    flex-grow: 1;
+}
+
+.notification-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.notification-message {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Dark mode styles */
+.dark-mode .notification {
+    background-color: rgba(32, 33, 36, 0.95);
+    border: 1px solid rgba(60, 64, 67);
+}
+
+.dark-mode .notification-title {
+    color: #fff;
+}
+
+.dark-mode .notification-message {
+    color: #aaa;
+}
+
+/* Dark mode form element styles */
+.dark-mode input,
+.dark-mode textarea {
+    background-color: rgba(55, 56, 60);
+    color: #ECDFCC;
+    border: 1px solid rgb(60, 64, 67);
+}
+
+.dark-mode input:focus,
+.dark-mode textarea:focus {
+    border-color: rgba(138, 180, 248);
+    outline: none;
+}
+
+.dark-mode button {
+    background-color: #007bff;
+    color: white;
+}

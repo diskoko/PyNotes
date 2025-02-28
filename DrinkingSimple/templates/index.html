@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Journal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Highlight styles for calendar */
+        .current-day {
+            background-color: #007bff; /* Blue for today */
+            color: #fff;
+            border-radius: 8px;
+        }
+        .entry-day {
+            background-color: #28a745; /* Green for days with entries */
+            color: #fff;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main container for the app -->
+    <div class="container">
+        <!-- Sidebar with navigation and tools -->
+        <div class="sidebar" role="navigation" aria-label="Sidebar">
+            <h2>Journal Navigation</h2>
+            
+            <!-- Monthly calendar widget -->
+            <div class="calendar" role="region" aria-label="Calendar">
+                <div class="month">
+                    <ul>
+                        <li class="prev" onclick="prevMonth()">&#10094;</li>
+                        <li class="next" onclick="nextMonth()">&#10095;</li>
+                        <li id="monthYear"><!-- Month and year populated by JS --></li>
+                    </ul>
+                </div>
+                <ul class="weekdays">
+                    <li>Mo</li>
+                    <li>Tu</li>
+                    <li>We</li>
+                    <li>Th</li>
+                    <li>Fr</li>
+                    <li>Sa</li>
+                    <li>Su</li>
+                </ul>
+                <!-- Calendar days - populated by JavaScript -->
+                <ul class="days">
+                    {% for day in days %}
+                        <li class="{{ 'entry-day' if day in entry_days else '' }}">{{ day }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <!-- Navigation links -->
+            <ul>
+                <li><a href="{{ url_for('home') }}" aria-label="Go to home page">Home</a></li>
+                <li><a href="{{ url_for('view_entries') }}" aria-label="View all journal entries">All Entries</a></li>
+            </ul>
+            
+            <!-- Dark mode toggle -->
+            <div class="switch-container">
+                <label for="dark-mode-toggle">Dark Mode</label>
+                <label class="switch">
+                    <input type="checkbox" id="dark-mode-toggle" aria-label="Toggle dark mode">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Main content area -->
+        <div class="main-content" role="main">
+            <h1>Journal Entry - {{ current_date }}</h1>
+            
+            <!-- Journal entry form -->
+            <div class="journal-entry-form">
+                <form id="journalForm" class="journal-entry-form">
+                    <input type="text" name="title" value="{{ entry_title }}" placeholder="Title">
+                    <textarea name="content" placeholder="Write your entry">{{ entry_content }}</textarea>
+                    <input type="hidden" name="date" value="{{ current_date }}">
+                    <button type="submit">Save Entry</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript for calendar functionality -->
+    <script>
+        // Calendar variables
+        const currentDate = new Date();
+        let selectedDate = new Date();
+        // Get days with entries from Flask
+        const entryDays = JSON.parse('{{ entry_days|tojson|safe }}'); 
+
+        /**
+         * Renders the calendar for the current month
+         * Highlights today and days with entries
+         */
+        function renderCalendar() {
+            const monthYearDisplay = document.getElementById('monthYear');
+            const daysContainer = document.querySelector('.days');
+            daysContainer.innerHTML = '';
+
+            const month = selectedDate.getMonth();
+            const year = selectedDate.getFullYear();
+            
+            // Display month and year
+            monthYearDisplay.innerHTML = `${selectedDate.toLocaleString('default', { month: 'long' })}<br><span style="font-size:18px">${year}</span>`;
+
+            // Calculate first day and last date of month
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const lastDateOfMonth = new Date(year, month + 1, 0).getDate();
+
+            // Create day elements
+            for (let i = 1; i <= lastDateOfMonth; i++) {
+                const dayElement = document.createElement('li');
+                dayElement.innerText = i;
+                
+                // Highlight today
+                if (i === currentDate.getDate() && 
+                    month === currentDate.getMonth() && 
+                    year === currentDate.getFullYear()) {
+                    dayElement.classList.add('current-day');
+                }
+                
+                // Highlight days with entries
+                if (entryDays.includes(i)) {
+                    dayElement.classList.add('entry-day');
+                }
+                
+                // Make days clickable
+                dayElement.onclick = () => selectDate(i);
+                daysContainer.appendChild(dayElement);
+            }
+        }
+
+        /**
+         * Handles date selection in the calendar
+         */
+        function selectDate(day) {
+            selectedDate.setDate(day);
+            const formattedDate = selectedDate.toISOString().split('T')[0];
+            // TODO: Navigate to the selected date's entry
+            alert(`You selected: ${selectedDate.toDateString()}\nWill navigate to that date's entry`);
+        }
+
+        /**
+         * Navigate to previous month
+         */
+        function prevMonth() {
+            selectedDate.setMonth(selectedDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        /**
+         * Navigate to next month
+         */
+        function nextMonth() {
+            selectedDate.setMonth(selectedDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        // Initialize calendar on page load
+        renderCalendar();
+    </script>
+    
+    <!-- Main application JavaScript -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+    <script>
+    document.getElementById('journalForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        try {
+            const response = await fetch('/save', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                showNotification(data.title, data.message);
+                // Clear form if needed
+                this.reset();
+            }
+        } catch (error) {
+            showNotification('Error', 'Failed to save entry');
+        }
+    });
+    </script>
+</body>
+</html>
