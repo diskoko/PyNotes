@@ -22,8 +22,10 @@
 ---
 
 ### **Screenshots**  
-![Calendar View](https://via.placeholder.com/400x250/4A5568/FFFFFF?text=Calendar+View)  
-![Entry Page](https://via.placeholder.com/400x250/4A5568/FFFFFF?text=Journal+Entry)  
+![Calendar View](![image](https://github.com/user-attachments/assets/374675cc-04f1-47e8-98e8-68c64ad4ddcc)
+)  
+![Entry Page](![image](https://github.com/user-attachments/assets/a8c2a08d-aad2-408d-a3bd-0dd3ad985cbc)
+)  
 
 ---
 
